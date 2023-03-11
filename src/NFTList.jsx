@@ -11,15 +11,15 @@ const NFTList = ({ address }) => {
 
   useEffect(() => {
     const fetchNFTs = async () => {
-      const response = await axios.get(`https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=20`);
-      setNFTs(response.data.assets);
+      const response = await axios.get(`https://api.opensea.io/v2/listings/collection/slug/all?owner=${address}&order_direction=desc&offset=0&limit=20`);
+      setNFTs(response.data.listings);
     };
 
     fetchNFTs();
   }, [address]);
 
   const handleCardClick = (nft) => {
-    setSelectedNFT(nft);
+    setSelectedNFT(nft.asset);
     setShowModal(true);
   };
 
@@ -31,9 +31,9 @@ const NFTList = ({ address }) => {
     <>
       <Row>
         {nfts.map((nft) => (
-          <Col key={nft.token_id}>
+          <Col key={nft.id}>
             <div onClick={() => handleCardClick(nft)}>
-              <NFTCard nft={nft} />
+              <NFTCard nft={nft.asset} />
             </div>
           </Col>
         ))}
